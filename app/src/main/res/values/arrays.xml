@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="Questions">
+        <item>/nQuestion1/Variant11/Variant12/Variant13/Variant14/1/</item>
+        <item>/nQuestion2/Variant21/Variant22/Variant23/Variant24/2/</item>
+        <item>/nQuestion3/Variant31/Variant32/Variant33/Variant34/3/</item>
+        <item>/nQuestion4/Variant41/Variant42/Variant43/Variant44/4/</item>
+        <item>/nQuestion5/Variant51/Variant52/Variant53/Variant54/1/</item>
+        <item>/nQuestion6/Variant61/Variant62/Variant63/Variant64/2/</item>
+        <item>/nQuestion7/Variant71/Variant72/Variant73/Variant74/3/</item>
+        <item>/nQuestion8/Variant81/Variant82/Variant83/Variant84/4/</item>
+    </array>
+</resources>

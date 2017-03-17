@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quiz</string>
+    <string name="note1">You have picked</string>
+    <string name="note2">right answers from</string>
+    <string name="note3">Your rating is</string>
+</resources>
