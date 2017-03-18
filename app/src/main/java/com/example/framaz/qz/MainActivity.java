@@ -1,6 +1,7 @@
 package com.example.framaz.qz;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button[] Answers=new Button[4];
 	private double width;
 	private double height;
+	private static final int LIVES=3;
+	private static final int QUESTIONS_TO_PASS=3;
 	private static final int QUESTIONS=8;
 	private static final int VARIANTS=4;
 	private static final char DELIMITER='/';
@@ -25,6 +28,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int[] RightAnswers=new int[QUESTIONS];
 	private String[] Ques=new String[QUESTIONS];
 	private TypedArray Base;
+	private int gamemode=1; //1 — бесконечный, 2 — 20 вопросов
 	private int time=0;
 	private int total_time=3;
 	private int right=0;
@@ -132,12 +136,24 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		time++;
 		LoadQuestion();
-		if (time==total_time){
-			Stats();
+		if((gamemode==1 && wrong==LIVES)  ||(gamemode==2 && time==QUESTIONS_TO_PASS))
+		{
+
+		//	Stats();
+			Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+			intent.putExtra("right",right);
+			intent.putExtra("wrong",wrong);
+			startActivity(intent);
 			time=0;
 			right=0;
 			wrong=0;
 		}
+		/*if (time==total_time){
+			Stats();
+			time=0;
+			right=0;
+			wrong=0;
+		}*/
 	}
 	
 	private void Stats() {
