@@ -14,13 +14,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:background="@drawable/text_back"
                 android:text="Ваши результаты"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -35,15 +36,15 @@
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Правильных ответов:"
-                android:textAlignment="textStart" />
+                android:layout_height="33dp"
+                android:background="@drawable/text_back"
+                android:text="Правильных ответов:" />
 
             <TextView
                 android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/text_back"
                 android:text="TextView" />
         </LinearLayout>
 
