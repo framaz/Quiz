@@ -10,17 +10,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
     /** Called when the activity is first created. */
 	private AbsoluteLayout Abs;
-	private Button Question;
+	private TextView Question;
 	private Button[] Answers=new Button[4];
 	private double width;
 	private double height;
 	private static final int LIVES=3;
-	private static final int QUESTIONS_TO_PASS=3;
+	private static final int QUESTIONS_TO_PASS=10;
 	private static final int QUESTIONS=8;
 	private static final int VARIANTS=4;
 	private static final char DELIMITER='/';
@@ -34,25 +36,30 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int right=0;
 	private int wrong=0;
 	private int current_right=0;
+	private boolean alreadyClicked=false;
+	private int whatClicked;
 	private AbsoluteLayout.LayoutParams[] params=new AbsoluteLayout.LayoutParams[VARIANTS+1];
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	try{
            super.onCreate(savedInstanceState);
-           Abs=new AbsoluteLayout(this);
-           setContentView(Abs);
+			setContentView(R.layout.game);
+			gamemode=getIntent().getIntExtra("gameMode",1);
+          /* Abs=new AbsoluteLayout(this);
+           setContentView(Abs);*/
            Display display = getWindowManager().getDefaultDisplay(); 
            width=display.getWidth();
            height=display.getHeight();
-           Question= new Button(this);
-           params[0]=new AbsoluteLayout.LayoutParams(
+           //Question= new Button(this);
+			Question=(TextView)findViewById(R.id.textView);
+         /*  params[0]=new AbsoluteLayout.LayoutParams(
                  (int)width,(int)height/4,0,0
            );
            Question.setLayoutParams(params[0]);
-           Abs.addView(Question);
-           Question.setOnClickListener(this);
+           Abs.addView(Question);*/
+           //Question.setOnClickListener(this);
            //
-           for (int i=1;i<VARIANTS+1;i++){
+           /*for (int i=1;i<VARIANTS+1;i++){
               int k=i%2;
               int m;
               if (i<3) m=1;
@@ -66,9 +73,17 @@ public class MainActivity extends Activity implements OnClickListener {
               Answers[i-1].setLayoutParams(params[i]);
               Abs.addView(Answers[i-1]);
               Answers[i-1].setOnClickListener(this);
-           }
+           }*/
+			Answers[0]=(Button)findViewById(R.id.button);
+			Answers[1]=(Button)findViewById(R.id.button1);
+			Answers[2]=(Button)findViewById(R.id.button2);
+			Answers[3]=(Button)findViewById(R.id.button3);
+			for(int i=0;i<4;i++)
+				Answers[i].setOnClickListener(this);
            //getSubstringBetweenDelimiters(2,3,"/Question1/Variant11/Variant12/Variant13/Variant14/Answer1/");
            //Toast.makeText(this, getSubstringBetweenDelimiters(5,6,"/Question1/Variant11/Variant12/Variant13/Variant14/Answer1/"), Toast.LENGTH_LONG).show();
+			RelativeLayout layout=(RelativeLayout)findViewById(R.id.layout);
+			layout.setOnClickListener(this);
            LoadQuestions();
            LoadQuestion();
     	}
@@ -120,40 +135,53 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
-		if (arg0==Question){
-			wrong++;
-		}
-		else{
-			wrong++;
-			for (int i=0;i<VARIANTS;i++){
-				if (arg0==Answers[i]){
-					if (current_right==i){
-						wrong--;
-						right++;
-					}
-				}
-			}
-		}
-		time++;
-		LoadQuestion();
-		if((gamemode==1 && wrong==LIVES)  ||(gamemode==2 && time==QUESTIONS_TO_PASS))
+		if(alreadyClicked)
 		{
+			Answers[current_right].setBackground(getResources().getDrawable(R.drawable.button_background));
+			Answers[whatClicked].setBackground(getResources().getDrawable(R.drawable.button_background));
+			LoadQuestion();
+			alreadyClicked=false;
 
-		//	Stats();
-			Intent intent = new Intent(MainActivity.this, ResultActivity.class);
-			intent.putExtra("right",right);
-			intent.putExtra("wrong",wrong);
-			startActivity(intent);
-			time=0;
-			right=0;
-			wrong=0;
-		}
+			if((gamemode==1 && wrong==LIVES)  ||(gamemode==2 && time==QUESTIONS_TO_PASS))
+			{
+
+				//	Stats();
+				Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+				intent.putExtra("right",right);
+				intent.putExtra("wrong",wrong);
+				startActivity(intent);
+				time=0;
+				right=0;
+				wrong=0;
+			}
 		/*if (time==total_time){
 			Stats();
 			time=0;
 			right=0;
 			wrong=0;
 		}*/
+		}
+		if (arg0==Question){
+			return;
+		}
+		else{
+			for (int i=0;i<VARIANTS;i++){
+				if (arg0==Answers[i]){
+					whatClicked=i;
+					if (current_right==i){
+						right++;
+					}
+					else
+						wrong++;
+					Answers[current_right].setBackground(getResources().getDrawable(R.drawable.button_normal_activity_true));
+					if(whatClicked!=current_right)
+						Answers[whatClicked].setBackground(getResources().getDrawable(R.drawable.button_normal_activity_false));
+					time++;
+					alreadyClicked=true;
+				}
+			}
+		}
+
 	}
 	
 	private void Stats() {
@@ -167,5 +195,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		stat+=getString(R.string.note3);
 		stat+=" "+(rating+"").substring(0,(rating+"").length()-2);
 		Toast.makeText(this, stat, Toast.LENGTH_LONG).show();
+	}
+	@Override
+	public void onBackPressed()
+	{
+		Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+		startActivity(intent);
 	}
 }
