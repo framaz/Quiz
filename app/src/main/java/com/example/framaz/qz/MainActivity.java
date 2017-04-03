@@ -2,6 +2,7 @@ package com.example.framaz.qz;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ObbInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.TimerTask;
 
 public class MainActivity extends Activity implements OnClickListener {
     /** Called when the activity is first created. */
@@ -38,7 +41,45 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int current_right=0;
 	private boolean alreadyClicked=false;
 	private int whatClicked;
+	private long HOWMANYTOWAIT=2000;
+	private long whenStarted;
+	private Object obj=new Object();
+	private ThreadLocal thread;
 	private AbsoluteLayout.LayoutParams[] params=new AbsoluteLayout.LayoutParams[VARIANTS+1];
+	private class ThreadLocal extends Thread
+	{
+		@Override
+		public void run() {
+			while(System.currentTimeMillis()-whenStarted<HOWMANYTOWAIT)
+			{
+			}
+			synchronized (obj) {
+				runOnUiThread( new Runnable() {
+					@Override
+					public void run() {
+						if (alreadyClicked) {
+							Answers[current_right].setBackground(getResources().getDrawable(R.drawable.button_background));
+							Answers[whatClicked].setBackground(getResources().getDrawable(R.drawable.button_background));
+							LoadQuestion();
+							alreadyClicked = false;
+
+							if ((gamemode == 1 && wrong == LIVES) || (gamemode == 2 && time == QUESTIONS_TO_PASS)) {
+
+								//	Stats();
+								Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+								intent.putExtra("right", right);
+								intent.putExtra("wrong", wrong);
+								startActivity(intent);
+								time = 0;
+								right = 0;
+								wrong = 0;
+							}
+						}
+					}
+				});
+			}
+		}
+	}
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	try{
@@ -86,6 +127,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			layout.setOnClickListener(this);
            LoadQuestions();
            LoadQuestion();
+			//process();
     	}
     	catch(Exception e){
     		Toast.makeText(this, e+"", Toast.LENGTH_LONG).show();
@@ -112,7 +154,7 @@ public class MainActivity extends Activity implements OnClickListener {
         	RightAnswers[i]=Integer.parseInt(getSubstringBetweenDelimiters(VARIANTS+1,VARIANTS+2,Base.getString(i)));
         }
     }
-   
+
     private String getSubstringBetweenDelimiters(int k, int m, String str){
     	int index1=0;
     	int index2=0;
@@ -135,31 +177,34 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
-		if(alreadyClicked)
+		synchronized (obj)
 		{
-			Answers[current_right].setBackground(getResources().getDrawable(R.drawable.button_background));
-			Answers[whatClicked].setBackground(getResources().getDrawable(R.drawable.button_background));
-			LoadQuestion();
-			alreadyClicked=false;
+			if(alreadyClicked) {
+				Answers[current_right].setBackground(getResources().getDrawable(R.drawable.button_background));
+				Answers[whatClicked].setBackground(getResources().getDrawable(R.drawable.button_background));
+				LoadQuestion();
+				alreadyClicked = false;
 
-			if((gamemode==1 && wrong==LIVES)  ||(gamemode==2 && time==QUESTIONS_TO_PASS))
-			{
+				if ((gamemode == 1 && wrong == LIVES) || (gamemode == 2 && time == QUESTIONS_TO_PASS)) {
 
-				//	Stats();
-				Intent intent = new Intent(MainActivity.this, ResultActivity.class);
-				intent.putExtra("right",right);
-				intent.putExtra("wrong",wrong);
-				startActivity(intent);
-				time=0;
-				right=0;
-				wrong=0;
-			}
+					//	Stats();
+					Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+					intent.putExtra("right", right);
+					intent.putExtra("wrong", wrong);
+					startActivity(intent);
+					time = 0;
+					right = 0;
+					wrong = 0;
+				}
+				return;
+		}
 		/*if (time==total_time){
 			Stats();
 			time=0;
 			right=0;
 			wrong=0;
 		}*/
+
 		}
 		if (arg0==Question){
 			return;
@@ -178,6 +223,9 @@ public class MainActivity extends Activity implements OnClickListener {
 						Answers[whatClicked].setBackground(getResources().getDrawable(R.drawable.button_normal_activity_false));
 					time++;
 					alreadyClicked=true;
+					whenStarted=System.currentTimeMillis();
+					thread=new ThreadLocal();
+					thread.start();
 				}
 			}
 		}
