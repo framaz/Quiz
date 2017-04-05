@@ -50,4 +50,8 @@ public class MenuActivity extends Activity {
             Toast.makeText(this, e+"", Toast.LENGTH_LONG).show();
         }
     }
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 }

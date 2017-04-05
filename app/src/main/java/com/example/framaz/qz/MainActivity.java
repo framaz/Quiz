@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private double height;
 	private static final int LIVES=3;
 	private static final int QUESTIONS_TO_PASS=10;
-	private static final int QUESTIONS=8;
+	private static final int QUESTIONS=143;
 	private static final int VARIANTS=4;
 	private static final char DELIMITER='/';
 	private String[][] AnsMatrix=new String[VARIANTS][QUESTIONS];
