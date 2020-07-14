@@ -23,7 +23,9 @@ public class RulesActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(com.example.framaz.qz.RulesActivity.this, MenuActivity.class);
+        Intent intent = new Intent(
+                com.example.framaz.qz.RulesActivity.this,
+                MenuActivity.class);
         startActivity(intent);
     }
 }

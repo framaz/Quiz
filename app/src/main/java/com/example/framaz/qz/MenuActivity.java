@@ -13,43 +13,50 @@ import android.widget.Toast;
  */
 
 public class MenuActivity extends Activity {
-    Button endless,blitz,rules;
+    Button endless, blitz, rules;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        try{
+        try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.menu);
-            endless=(Button)findViewById(R.id.button5);
-            blitz=(Button)findViewById(R.id.button8);
-            rules=(Button)findViewById(R.id.button7);
+            endless = findViewById(R.id.button5);
+            blitz = findViewById(R.id.button8);
+            rules = findViewById(R.id.button7);
             endless.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(MenuActivity.this, com.example.framaz.qz.MainActivity.class);
-                    intent.putExtra("gameMode",1);
+                    Intent intent = new Intent(
+                            MenuActivity.this,
+                            com.example.framaz.qz.MainActivity.class);
+                    intent.putExtra("gameMode", 1);
                     startActivity(intent);
                 }
             });
             blitz.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(MenuActivity.this, com.example.framaz.qz.MainActivity.class);
-                    intent.putExtra("gameMode",2);
+                    Intent intent = new Intent(
+                            MenuActivity.this,
+                            com.example.framaz.qz.MainActivity.class);
+                    intent.putExtra("gameMode", 2);
                     startActivity(intent);
                 }
             });
             rules.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(MenuActivity.this, com.example.framaz.qz.RulesActivity.class);
+                    Intent intent = new Intent(
+                            MenuActivity.this,
+                            com.example.framaz.qz.RulesActivity.class);
                     startActivity(intent);
                 }
             });
-        }
-        catch(Exception e){
-            Toast.makeText(this, e+"", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, e + "", Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);

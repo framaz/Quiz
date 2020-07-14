@@ -16,22 +16,20 @@ import org.w3c.dom.Text;
 public class ResultActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        try{
+        try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.result_layout);
-            int asd=getIntent().getIntExtra("right",0);
-            TextView tw=(TextView)findViewById(R.id.textView7);
-            String lol=Integer.toString(asd);
+            int asd = getIntent().getIntExtra("right", 0);
+            TextView tw = findViewById(R.id.textView7);
+            String lol = Integer.toString(asd);
             tw.setText(lol);
-            asd=asd;
-        }
-        catch(Exception e){
-            Toast.makeText(this, e+"", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, e + "", Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Intent intent = new Intent(ResultActivity.this, MenuActivity.class);
         startActivity(intent);
     }
