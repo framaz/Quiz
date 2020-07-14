@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Quiz.iml" filepath="$PROJECT_DIR$/Quiz.iml" group="Quiz" />
+      <module fileurl="file://$PROJECT_DIR$/app/Quiz-app.iml" filepath="$PROJECT_DIR$/app/Quiz-app.iml" group="Quiz/app" />
       <module fileurl="file://$PROJECT_DIR$/Qz.iml" filepath="$PROJECT_DIR$/Qz.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
